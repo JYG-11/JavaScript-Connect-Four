@@ -3,32 +3,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const result = document.querySelector('#result')
     const displayCurrentPlayer = document.querySelector('#current-player')
     let currentPlayer = 1
+    let gameOver = false
 
-    for (var i = 0, len = squares.length; i < len; i++)
+    function makeMove(index) {
+        return function() {
 
-    (function(index) {
-        squares[i].onclick = function() {
+            if (gameOver) {
+                return null
+            }
+
             if (squares[index + 7].classList.contains('taken') &&
                 squares[index].classList.contains('player-one') === false &&
                 squares[index].classList.contains('player-two') === false) {
+
                 if (currentPlayer === 1) {
                     squares[index].classList.add('taken')
                     squares[index].classList.add('player-one')
                     currentPlayer = 2
                     displayCurrentPlayer.innerHTML = currentPlayer
+
                 } else {
                     squares[index].classList.add('taken')
                     squares[index].classList.add('player-two')
                     currentPlayer = 1
                     displayCurrentPlayer.innerHTML = currentPlayer
                 }
-
                 checkBoard()
             } else {
                 alert('choose another square')
             }
         }
-    }) (i)
+    }
 
     function checkBoard() {
 
@@ -56,6 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 square4.classList.contains('player-one')) {
 
                 result.innerHTML = 'Player one wins!'
+                gameOver = true
             } 
             else if (square1.classList.contains('player-two') &&
                 square2.classList.contains('player-two') &&
@@ -63,7 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 square4.classList.contains('player-two')) {
                 
                 result.innerHTML = 'Player two wins!'
+                gameOver = true
             }
         }
     }
+
+    squares.forEach((square, index) => square.addEventListener('click', makeMove(index)))
 })
