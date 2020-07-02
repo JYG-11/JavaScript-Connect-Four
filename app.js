@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const squares = document.querySelectorAll('.grid div')
     const result = document.querySelector('#result')
     const displayCurrentPlayer = document.querySelector('#current-player')
+    const root = Math.sqrt(squares.length)
+    const goal = 4
     let currentPlayer = 1
     let gameOver = false
 
@@ -15,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (squares[index].classList.contains('player-one') === false && 
                 squares[index].classList.contains('player-two') === false && 
                 (index >= squares.length - Math.sqrt(squares.length) || 
-                squares[index + 7].classList.contains('taken'))) {
+                squares[index + root].classList.contains('taken'))) {
 
                 if (currentPlayer === 1) {
                     squares[index].classList.add('taken')
@@ -79,11 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let consequetive = 0
 
-        for (let x = 0; x < 4; x++) {
-            if (x == 0 || ((i + x) % 7 != 0)) {
+        for (let x = 0; x < root; x++) {
+            if (x == 0 || ((i + x) % root != 0)) {
                 if (squares[i + x].classList.contains('player-' + player)) {
                     consequetive++
-                    if (consequetive == 4) {
+                    if (consequetive == goal) {
                         result.innerHTML = 'Player ' + player + ' wins!'
                         gameOver = true
                         return
@@ -112,11 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let consequetive = 0
 
-        for (let z = 0; z < squares.length; z+= 7) {
+        for (let z = 0; z < squares.length; z+= root) {
             if (i + z < squares.length) {
                 if (squares[i + z].classList.contains('player-' + player)) {
                     consequetive++
-                    if (consequetive == 4) {
+                    if (consequetive == goal) {
                         result.innerHTML = 'Player ' + player + ' wins!'
                         gameOver = true
                         return
@@ -145,11 +147,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let consequetive = 0
 
-        for (let z = 0; z < squares.length; z+= 6) {
+        for (let z = 0; z < squares.length; z+= (root - 1)) {
             if (i + z < squares.length) {
                 if (squares[i + z].classList.contains('player-' + player)) {
                     consequetive++
-                    if (consequetive == 4) {
+                    if (consequetive == goal) {
                         result.innerHTML = 'Player ' + player + ' wins!'
                         gameOver = true
                         return
@@ -178,11 +180,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let consequetive = 0
 
-        for (let z = 0; z < squares.length; z+= 8) {
+        for (let z = 0; z < squares.length; z+= (root + 1)) {
             if (i + z < squares.length) {
                 if (squares[i + z].classList.contains('player-' + player)) {
                     consequetive++
-                    if (consequetive == 4) {
+                    if (consequetive == goal) {
                         result.innerHTML = 'Player ' + player + ' wins!'
                         gameOver = true
                         return
@@ -195,8 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-
-    
 
     squares.forEach((square, index) => square.addEventListener('click', makeMove(index)))
 })
